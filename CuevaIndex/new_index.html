@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AAPL Price: {{ current_price }}</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #fff;
+            margin: 0;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #fff;
+        }
+        a {
+            color: #fff;
+        }
+        a:hover {
+            color: #a9a9a9;
+        }
+        /* Estilos adicionales según tus necesidades */
+        #app-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        #app-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+        }
+        #news-container {
+            margin-left: 20px;
+            width: 30%;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="app-wrapper">
+        <div id="app-container">
+            <h1>Precio actual de {{ data.ticker_symbol }}: ${{ data.last_price }}</h1>
+            <div id="app">{%app_entry%}</div>
+            <footer>
+                {%config%}
+                {%scripts%}
+                {%renderer%}
+                <style>
+                    .plotly-graph-div .plotly .main-svg text {
+                        color: #fff;}
+                        /* Cambiar el color de fondo del menú desplegable del dcc.Dropdown */
+.Select-menu-outer {
+    background-color: #1E1E1E; /* Establecer un color de fondo oscuro para el menú desplegable */
+}
+
+                </style>
+                
+            </footer>
+        </div>
+        <div id="news-container">
+            <h2>Noticias sobre: AAPL</h2>
+            <ul>
+                {% for entry in news %}
+                <li class="menu-item"><a href="{{ entry.link }}">{{ entry.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

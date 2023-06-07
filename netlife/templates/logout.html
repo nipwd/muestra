@@ -1,0 +1,51 @@
+{% extends "templates/index.html" %}
+{% load static %}
+
+{% block contenidoQueCambia %}
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .mensaje-cierre {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #fff;
+        background-color: #00AEEF;
+        opacity: 0;
+        animation: fade-in 1s ease-in-out forwards;
+    }
+
+    @keyframes fade-in {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+</style>
+
+<div class="mensaje-cierre">
+    <h1>Sesión Cerrada</h1>
+</div>
+
+<script>
+    setTimeout(function() {
+        var mensaje = document.querySelector('.mensaje-cierre');
+        mensaje.style.animation = 'fade-out 1s ease-in-out forwards';
+        setTimeout(function() {
+            mensaje.style.display = 'none';
+        }, 1000);
+    }, 3000);
+</script>
+{% endblock %}

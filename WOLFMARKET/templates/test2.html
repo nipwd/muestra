@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+    {% load static %}
+    <link href="https://unpkg.com/lightweight-charts@3.3.0/dist/lightweight-charts.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        label {
+            color: #ffffff;
+        }
+        input[type=text] {
+            background-color: #3a3d4a;
+            color: #ffffff;
+            border: none;
+        }
+        button[type=submit] {
+            background-color: #2f9bfe;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+    
+
+    <script src="https://unpkg.com/lightweight-charts@3.3.0/dist/lightweight-charts.standalone.production.js"></script>
+
+    <div>
+        <link href="./home.css" rel="stylesheet" />
+        <div class="home-container">
+          <div class="home-head">
+            <div class="home-container1">
+              <img
+                alt="image"
+                src="{% static 'assets/img/logo.png' %}"
+                class="home-image"
+              />
+              <svg viewBox="0 0 1024 1024" class="home-icon">
+                <path
+                  d="M682 854v-172h172v172h-172zM682 598v-172h172v172h-172zM426 342v-172h172v172h-172zM682 170h172v172h-172v-172zM426 598v-172h172v172h-172zM170 598v-172h172v172h-172zM170 854v-172h172v172h-172zM426 854v-172h172v172h-172zM170 342v-172h172v172h-172z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <div class="home-container2"><span class="home-text">
+            <h1>Trading Chart</h1>
+            <form method="post">
+                {% csrf_token %}
+                <label for="symbol">Symbol:</label>
+                <input type="text" id="symbol" name="symbol">
+                <br>
+                <label for="timeframe">Timeframe:</label>
+                <input type="text" id="timeframe" name="timeframe">
+                <br>
+                <button type="submit">Get Data</button>
+            </form>
+          </span></div>
+          <div class="home-grafico">
+            <div id="chart-container"></div>
+            {% if data %}
+                <script>
+                    var chart = LightweightCharts.createChart(document.getElementById('chart-container'), {
+                        width: 1800,
+                        height: 900,
+                            layout: {
+                backgroundColor: '#000000',
+                textColor: '#d1d4dc',
+            },
+            grid: {
+                vertLines: {
+                    color: '#3f424d',
+                },
+                horzLines: {
+                    color: '#3f424d',
+                },
+            },
+            crosshair: {
+                color: '#758696',
+            },
+            candlestick: {
+                bearColor: '#d75442',
+                bullColor: '#6ba583',
+                borderVisible: false,
+                wickVisible: true,
+                borderColor: '#000000',
+                upColor: '#6ba583',
+                downColor: '#d75442',
+            },
+        });
+                    var candlestickSeries = chart.addCandlestickSeries();
+                 
+                    candlestickSeries.setData([
+                    {% for row in data %}
+                        { time: {{ row.0 }}, open: {{ row.1 }}, high: {{ row.2 }}, low: {{ row.3 }}, close: {{ row.4 }} },
+                    {% endfor %}
+        
+                    ]);
+                </script>
+            {% endif %}
+          </div>
+          <div class="home-footer">
+            <img
+              alt="image"
+              src="{% static 'assets/img/logo.png' %}"
+              class="home-image2"
+            />
+          </div>
+        </div>
+      </div>
+      <style>
+        .home-container {
+  width: 100%;
+  display: flex;
+  overflow: auto;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #000000;
+}
+.home-head {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  max-width: var(--dl-size-size-maxwidth);
+  align-items: flex-start;
+  border-color: var(--dl-color-gray-500);
+  border-width: medium;
+  justify-content: center;
+  background-color: #000000;
+  border-top-width: medium;
+}
+.home-container1 {
+  flex: 0 0 auto;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  position: relative;
+  max-width: var(--dl-size-size-maxwidth);
+  align-self: center;
+  align-items: center;
+  padding-left: var(--dl-space-space-threeunits);
+  padding-right: var(--dl-space-space-threeunits);
+  flex-direction: row;
+  justify-content: center;
+}
+.home-image {
+  width: auto;
+  height: 44px;
+  align-self: center;
+  object-fit: cover;
+}
+.home-icon {
+  top: 10px;
+  fill: #D9D9D9;
+  right: 0px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+}
+.home-container2 {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-self: center;
+  align-items: center;
+  padding-top: var(--dl-space-space-threeunits);
+  padding-bottom: var(--dl-space-space-threeunits);
+  justify-content: center;
+}
+.home-text {
+  color: #ffffff;
+}
+.home-grafico {
+  flex: 0 0 auto;
+  width: 100%;
+  height: auto;
+  display: flex;
+  max-width: var(--dl-size-size-maxwidth);
+  align-self: center;
+  padding-top: var(--dl-space-space-threeunits);
+  padding-bottom: var(--dl-space-space-threeunits);
+  justify-content: center;
+}
+.home-image1 {
+  width: 100%;
+  height: 100%;
+  align-self: center;
+  margin-top: var(--dl-space-space-sixunits);
+  object-fit: cover;
+}
+.home-footer {
+  height: 125px;
+  display: flex;
+  max-width: var(--dl-size-size-maxwidth);
+  align-self: center;
+  align-items: flex-start;
+  padding-top: var(--dl-space-space-twounits);
+  padding-bottom: var(--dl-space-space-twounits);
+}
+.home-image2 {
+  width: auto;
+  height: 100%;
+  align-self: center;
+  object-fit: cover;
+}
+@media(max-width: 1600px) {
+  .home-container1 {
+    align-items: center;
+    justify-content: center;
+  }
+  .home-image1 {
+    align-self: center;
+  }
+}
+@media(max-width: 1200px) {
+  .home-container1 {
+    align-items: center;
+    justify-content: center;
+  }
+  .home-image1 {
+    align-self: center;
+  }
+}
+@media(max-width: 991px) {
+  .home-container1 {
+    gap: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .home-image1 {
+    align-self: center;
+  }
+}
+@media(max-width: 767px) {
+  .home-container1 {
+    align-items: center;
+    justify-content: center;
+  }
+  .home-image1 {
+    align-self: center;
+  }
+}
+@media(max-width: 479px) {
+  .home-head {
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+  }
+  .home-container1 {
+    align-items: center;
+    justify-content: center;
+  }
+  .home-image1 {
+    align-self: center;
+  }
+}
+
+      </style>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AAPL Price: {{ current_price }}</title>
+</head>
+<body>
+    <h1>Precio en tiempo real de: AAPL  $ {{ current_price }}</h1>
+    <style>body {
+        background-color: #000000;
+        color: #fff;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: #fff;
+    }
+    
+    a {
+        color: #fff;
+    }
+    
+    a:hover {
+        color: #a9a9a9;
+    }
+    
+    /* Agregar estilos adicionales según tus necesidades */
+    </style>
+    <div style="display: flex;">
+        <div>
+            <img src="data:image/png;base64, {{ image_data }}" alt="Gráfico de precios">
+        </div>
+        <div style="margin-left: 20px;">
+            <h2>Noticias sobre: AAPL</h2>
+            <style>
+                .menu-item a {
+    font-size: 21px;
+}
+
+            </style>
+            <ul>
+                {% for entry in news %}
+                <li class="menu-item"><a href="{{ entry.link }}">{{ entry.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

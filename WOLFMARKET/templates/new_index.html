@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #000000;
+            color: #fff;
+            margin: 0;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #fff;
+        }
+        a {
+            color: #fff;
+        }
+        a:hover {
+            color: #a9a9a9;
+        }
+        #app-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="app-wrapper">
+        <div id="app-container">
+            <div id="app">{%app_entry%}</div>
+            <footer>
+                {%config%}
+                {%scripts%}
+                {%renderer%}
+                <style>
+                    .plotly-graph-div .plotly .main-svg text {
+                        color: #fff;}
+                        /* Cambiar el color de fondo del menú desplegable del dcc.Dropdown */
+                        .Select-menu-outer {background-color: #1E1E1E; /* Establecer un color de fondo oscuro para el menú desplegable */}
+                </style>
+            </footer>
+        </div>
+</body>
+</html>

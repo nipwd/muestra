@@ -1,0 +1,400 @@
+{% extends "templates/index.html" %}
+{% load static %}
+
+{% block contenidoQueCambia %}
+
+<style>
+    .dropdown {
+      font-size: 20px;
+      background-color: #00AEEF;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .dropdown > * {
+      margin: 5px;
+    }
+  
+    .dropdown a,
+    .dropdown button {
+      border: 1px solid black;
+      padding: 5px;
+      background-color: #00AEEF;
+      color: black;
+      font-size: 20px;
+    }
+  
+    .dropdown form {
+      display: inline-block;
+    }
+  
+    .dropdown form.add_your_class {
+      display: flex;
+      align-items: center;
+    }
+  
+    .dropdown form.add_your_class input[type="search"],
+    .dropdown form.add_your_class button {
+      margin: 5px;
+    }
+  
+    .separator {
+      width: 1px;
+      height: 20px;
+      background-color: black;
+      margin: 0 10px;
+    }
+
+
+    body {
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      width: 95%;
+      margin: 0 auto; 
+    }
+
+    .container > div {
+      flex: 1;
+    }
+
+    .container > div:first-child {
+      flex-basis: 70%;
+    }
+
+    .container > div:last-child {
+      flex-basis: 30%;
+    }
+    #overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9998; 
+  background-color: rgba(0, 0, 0, 0.75);
+  display: none;
+}
+
+#formularioContainer {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  z-index: 9999;
+  background-color: #fff;
+  padding: 20px;
+  width: 600px;
+  height: 400px;
+}
+
+    
+  </style>
+
+<div class="responsive-table" style="width: 100%; height: auto;border-style: none;">
+  <table class="table" >
+    <tr>
+      <td>
+        <div class="dropdown">
+          <a class="bi bi-arrow-left-short btn-lg" href="{% url 'verStock' anterior %}"></a>
+          <a class="bi bi-arrow-right-short btn-lg" href="{% url 'verStock' siguiente %}"></a>
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width: 20%;">{{ nombre }}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" >
+            {% for nombre in name %}
+            <li><a href="{% url 'verStock' nombre.name %}">{{ nombre.name }}</a></li>
+            {% endfor %}
+          </ul>
+          <a style="font-size:20px;{% if cable_bobina < 0 %}background-color:#ef0000;color:white{% else %}background-color:#08ef00;{% endif %}">
+            Consumo Cable: {{ cable_bobina }}
+          </a>
+       
+          <div class="separator"></div>
+          <form class="add_your_class" method="POST" enctype="multipart/form-data">
+            <label for="valor">Agregar seriado: </label>
+            {% csrf_token %}
+            <table>
+                {{ form3 }}
+            </table>
+            <input type="submit" value="Enviar" style="font-size:20px;background-color:#00AEEF;color:black;border: 2px solid black;">
+        </form>
+
+          <div class="separator"></div>
+
+          <form class="add_your_class" method="POST" enctype="multipart/form-data">
+            <label for="valor">Agregar consumo: </label>
+            {% csrf_token %}
+            <table>
+                {{ form2 }}
+            </table>
+            <input type="submit" value="Enviar" style="font-size:20px;background-color:#00AEEF;color:black;border: 2px solid black;">
+        </form>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<body>
+    <div class="container" style="max-width:100%;height:auto;">
+      
+        <table style="width: 100%; height: auto;border-style: none;">
+
+          
+            <style>
+              .td,tr{font-size:20px;background-color:#ffffff;color:black;padding:auto;text-align:center;padding: 5px 10px; }
+              td:hover {background-color: #D6EEEE;}
+            </style>
+            <style>
+              .br-style {
+                background-color: black;
+                color: rgb(255, 255, 255);
+                display: inline-block;
+                padding: 5px;
+                margin: 2px;
+              }
+            </style>
+            
+            <tr>
+              <td style="border: 1px solid black; text-align: center; vertical-align: top">
+                <div style="margin-bottom: 10%; background-color:#00AEEF;">Deco cisco
+                  <span id="count_cisco" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+
+                </div>
+                {% for cisco in equipos_dcisco %}
+                  <span class="br-style">{{ cisco.seriado }}</span>
+                  <button onclick="mostrarFormulario('{{ cisco.seriado }}')">Editar</button>
+                  <br>
+                {% endfor %}
+              </td>
+          
+              <td style="border: 1px solid black; text-align: center; vertical-align: top">
+                <div style="margin-bottom: 10%; background-color:#00AEEF;">Deco sagem
+                  <span id="count_sagem" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+                </div> 
+                {% for sagem in equipos_dsagem %}
+                  <div style="display: inline-block;">
+                    <span class="br-style">{{ sagem.seriado }}</span>
+                    <button onclick="mostrarFormulario('{{ sagem.seriado }}')">Editar</button>
+                    <br>
+                  </div>
+                {% endfor %}
+              </td>
+              
+              
+              
+              <td style="border: 1px solid black; text-align: center; vertical-align: top">
+                <div style="margin-bottom: 10%;background-color:#00AEEF;">Deco 4k 362
+                  <span id="count_362" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+                </div> 
+                {% for 4k362 in equipos_4k362 %}
+                <div style="display: inline-block;">
+                  <span class="br-style">{{ 4k362.seriado }}</span>
+                  <button onclick="mostrarFormulario('{{ 4k362.seriado }}')">Editar</button>
+                  <br>
+                </div>
+                {% endfor %}
+              </td>
+
+
+
+          <td style="border: 1px solid black; text-align: center; vertical-align: top">
+            <div style="margin-bottom: 10%;background-color:#00AEEF;">Deco 4k 487
+              <span id="count_387" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+            </div> 
+            {% for 4k387 in equipos_4k387 %}
+            <div style="display: inline-block;">
+              <span class="br-style">{{ 4k387.seriado }}</span>
+              <button onclick="mostrarFormulario('{{ 4k387.seriado }}')">Editar</button>
+              <br>
+            </div>
+            {% endfor %}
+          </td>
+
+
+
+
+          <td style="border: 1px solid black; text-align: center; vertical-align: top">
+            <div style="margin-bottom: 10%;background-color:#00AEEF;">Deco alexa
+              <span id="count_alexa" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+            </div> 
+            {% for alexa in equipos_alexa %}
+            <div style="display: inline-block;">
+              <span class="br-style">{{ alexa.seriado }}</span>
+              <button onclick="mostrarFormulario('{{ alexa.seriado }}')">Editar</button>
+              <br>
+            </div>
+            {% endfor %}
+          </td>
+
+
+
+          <td style="border: 1px solid black; text-align: center; vertical-align: top">
+            <div style="margin-bottom: 10%;background-color:#00AEEF;">Modem 2.0
+              <span id="count_2cero" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+            </div> 
+            {% for doscero in equipos_2_0 %}
+            <div style="display: inline-block;">
+              <span class="br-style">{{ doscero.seriado }}</span>
+              <button onclick="mostrarFormulario('{{ doscero.seriado }}')">Editar</button>
+              <br>
+            </div>
+            {% endfor %}
+          </td>
+
+
+
+          <td style="border: 1px solid black; text-align: center; vertical-align: top">
+            <div style="margin-bottom: 10%;background-color:#00AEEF;">Modem 3.0
+              <span id="count_3cero" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+            </div> 
+            {% for trescero in equipos_3_0 %}
+            <div style="display: inline-block;">
+              <span class="br-style">{{ trescero.seriado }}</span>
+              <button onclick="mostrarFormulario('{{ trescero.seriado }}')">Editar</button>
+              <br>
+            </div>
+            {% endfor %}
+          </td>
+
+
+
+          <td style="border: 1px solid black; text-align: center; vertical-align: top">
+            <div style="margin-bottom: 10%;background-color:#00AEEF;">Modem 3.1
+              <span id="count_3uno" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+
+            </div> 
+            {% for tresuno in equipos_3_1 %}
+            <div style="display: inline-block;">
+              <span class="br-style">{{ tresuno.seriado }}</span>
+              <button onclick="mostrarFormulario('{{ tresuno.seriado }}')">Editar</button>
+              <br>
+            </div>
+            {% endfor %}
+          </td>
+
+          
+
+          <td style="border: 1px solid black; text-align: center; vertical-align: top">
+            <div style="margin-bottom: 10%;background-color:#00AEEF;">Mesh
+              <span id="count_mesh" style="margin-bottom: 10%; background-color:magenta;color: white;"></span>
+            </div> 
+            {% for mesh in equipos_mesh %}
+            <div style="display: inline-block;">
+              <span class="br-style">{{ mesh.seriado }}</span>
+              <button onclick="mostrarFormulario('{{ mesh.seriado }}')">Editar</button>
+              <br>
+            </div>
+            {% endfor %}
+          </td>
+
+
+
+        </tr>
+      </table>
+
+      <div id="overlay"></div>
+      <div id="formularioContainer" style="display: none;"></div>
+      
+      
+      <div class="separator" ></div>
+      
+      <div style="width: 100%; height: auto;border-style: none;">
+        <h3 style="font-size:20px;background-color:#00AEEF;color:black;padding:auto;text-align:center;padding: 3px;border: 1px solid black;  ">Agregar Equipos</h3>
+        {% autoescape off %} 
+        <form method="POST" enctype="multipart/form-data" style="font-size:20px;color:black;padding: auto;text-align:center;"> {% csrf_token %}
+            <table style="font-size:20px;color:black;margin: 0 auto;">
+                {{ formulario.as_table  }}
+            </table>
+            <input type="submit" value="Enviar" style="font-size:20px;background-color:#00AEEF;color:black;margin-top:10px;" >
+            <style>textarea {
+                width: 100%;
+                float: left;
+            }</style>
+        </form>
+        
+    
+      {% endautoescape %}.
+      </div>
+    </div>
+  </body>
+  
+  <p></p>
+  <p></p>
+  <p></p>
+
+    
+  
+  
+<script>
+function mostrarFormulario(seriado) {
+  var url = "{% url 'editar_equipo' %}?seriado=" + encodeURIComponent(seriado);
+  var formularioContainer = document.getElementById('formularioContainer');
+  var overlay = document.getElementById('overlay');
+  while (formularioContainer.firstChild) {
+    formularioContainer.firstChild.remove();}
+  var iframe = document.createElement('iframe');
+    iframe.src = url;
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.border = 'none';
+  window.addEventListener('message', function(event) {
+  if (event.data === 'cerrarFormulario') {
+    cerrarFormulario();}});
+  overlay.style.display = 'block';
+  formularioContainer.style.display = 'block';
+  formularioContainer.appendChild(iframe);}
+
+function cerrarFormulario() {
+  var formularioContainer = document.getElementById('formularioContainer');
+  var overlay = document.getElementById('overlay');
+    overlay.style.display = 'none';
+    formularioContainer.style.display = 'none';
+    location.reload();}
+
+  function contarElementos() {
+    var ciscoCount = document.querySelectorAll("td:nth-child(1) .br-style").length;
+      document.getElementById("count_cisco").innerText = "__" + ciscoCount + "__" ;
+
+    var sagemCount = document.querySelectorAll("td:nth-child(2) .br-style").length;
+      document.getElementById("count_sagem").innerText = "__" + sagemCount + "__";
+
+    var tres62Count = document.querySelectorAll("td:nth-child(3) .br-style").length;
+      document.getElementById("count_362").innerText = "__" + tres62Count + "__";
+    
+    var tres87Count = document.querySelectorAll("td:nth-child(4) .br-style").length;
+      document.getElementById("count_387").innerText = "__" + tres87Count + "__";
+
+    var alexaCount = document.querySelectorAll("td:nth-child(5) .br-style").length;
+      document.getElementById("count_alexa").innerText = "__" + alexaCount + "__";
+
+    var dosceroCount = document.querySelectorAll("td:nth-child(6) .br-style").length;
+      document.getElementById("count_2cero").innerText = "__" + dosceroCount + "__";
+
+    var tresceroCount = document.querySelectorAll("td:nth-child(7) .br-style").length;
+      document.getElementById("count_3cero").innerText = "__" + tresceroCount + "__";
+
+    var tresunoCount = document.querySelectorAll("td:nth-child(8) .br-style").length;
+      document.getElementById("count_3uno").innerText = "__" + tresunoCount + "__";
+
+    var meshCount = document.querySelectorAll("td:nth-child(9) .br-style").length;
+      document.getElementById("count_mesh").innerText = "__" + meshCount + "__";}
+
+window.addEventListener("DOMContentLoaded", contarElementos);
+
+</script>
+  
+
+
+
+           
+
+
+{% endblock %}
+
+

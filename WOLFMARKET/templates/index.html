@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+    {% load static %}
+
+    <head>
+        <meta id="page-title" name="title" content="{{ ticker_activo }} Price: {{ valor_Activo }}">
+        <style>
+            /* Estilos del menú */
+            .navbar {
+                background-color: #1E1E1E;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 9999;
+            }
+    
+            .navbar-brand {
+                color: #fff;
+                font-size: 24px;
+                margin: 0;
+            }
+    
+            .navbar-menu {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                align-items: center;
+            }
+    
+            .navbar-menu li {
+                margin-left: 10px;
+            }
+    
+            .navbar-menu li a {
+                color: #fff;
+                text-decoration: none;
+            }
+    
+            .navbar-menu li a:hover {
+                color: #a9a9a9;
+            }
+    
+            /* Resto de los estilos del código */
+            body {
+                background-color: #000000;
+                color: #fff;
+                margin: 0;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                color: #fff;
+            }
+            a {
+                color: #fff;
+            }
+            a:hover {
+                color: #a9a9a9;
+            }
+            /* Estilos adicionales según tus necesidades */
+            #app-wrapper {
+                display: flex;
+                height: 100vh;
+                width: 100vw;
+                overflow: hidden;
+            }
+            #app-container {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                overflow: auto;
+                margin-top: 60px; /* Ajustar margen para evitar que el menú se superponga con el contenido */
+            }
+            #news-container {
+                margin-left: 20px;
+                width: 30%;
+                overflow: auto;
+            }
+            body {
+                overflow: hidden;
+            }
+    
+            ::-webkit-scrollbar {
+                width: 0.5em;
+                height: 0.5em;
+            }
+    
+            ::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+    
+            ::-webkit-scrollbar-thumb {
+                background-color: #4e4e4e;
+                border-radius: 1em;
+            }
+        </style>
+    </head>
+<body>
+        <!-- Barra de navegación -->
+        <nav class="navbar">
+            <div class="navbar-brand">{{ ticker_activo }}  Price: {{ valor_Activo }}</div>
+            <img src="{% static 'assets/img/logo.png' %}"style="width: 500px; height: 100px;" alt="Imagen" />
+
+            <ul class="navbar-menu">
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Opción 1</a></li>
+                <li><a href="#">Opción 2</a></li>
+                <li><a href="#">Opción 3</a></li>
+            </ul>
+        </nav>
+    <div id="app-wrapper">
+        <div id="app-container">
+            <h1>Precio actual de {{ ticker_activo }}: ${{ valor_Activo }}</h1>
+            <footer>
+                <div id="dash-graphic"></div>
+
+                <style>
+                    .plotly-graph-div .plotly .main-svg text {
+                        color: #fff;}
+                        /* Cambiar el color de fondo del menú desplegable del dcc.Dropdown */
+.Select-menu-outer {
+    background-color: #1E1E1E; /* Establecer un color de fondo oscuro para el menú desplegable */
+}
+
+                </style>
+                <iframe src="http://localhost:8080/" width="100%" height="1000px"></iframe>
+
+            </footer>
+        </div>
+        <style>#news-container {
+            margin-left: 20px;
+            margin-top: 110px;
+            margin-bottom: 600px;
+            width: 30%;
+            overflow: auto;
+        }
+        
+        .tweet-item {
+            background-color: #1E1E1E;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        
+        .tweet-header {
+            display: flex;
+            align-items: center;
+        }
+        
+    
+        .tweet-content {
+            color: #fff;
+            font-size: 19px;
+            margin-top: 2px;
+        }
+
+        .tweet-link:hover {
+            color: #fff;
+        }
+        </style>
+        <div id="news-container">
+            <h2>Noticias sobre: {{ ticker_activo }}</h2>
+            <ul>
+                {% for entry in noticias %}
+                <li class="tweet-item">
+
+                    <div class="tweet-content">
+                        {{ entry }}
+                    </div>
+             
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div> 
+</body>
+
+</html>

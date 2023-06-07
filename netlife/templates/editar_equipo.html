@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Equipo</title>
+    <style>
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .form-table th,
+        .form-table td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .save-container {
+            text-align: center;
+        }
+
+        .save {
+            font-size: 20px;
+            background-color: #00AEEF;
+            color: black;
+            margin-top: 10px;
+            padding: auto;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size:20px;background-color:#00AEEF;color:black;padding:auto;text-align:center;">Editar Equipo</h1>
+    {% block content %}
+    <h2 style="font-size:25px;margin-top:10px;padding: auto;text-align:center;color: white;background-color: black;padding:20px;">  {{ seriado }} </h2>
+    <form method="POST" class="post-form" id="myForm">{% csrf_token %}
+        <table class="form-table">
+            <tr>
+                <th><label for="{{ form.estado.id_for_label }}">Estado:</label></th>
+                <td>{{ form.estado }}</td>
+            </tr>
+            <tr>
+                <th><label for="{{ form.nombre_equipo.id_for_label }}">Nombre del Equipo:</label></th>
+                <td>{{ form.nombre_equipo }}</td>
+            </tr>
+            <tr>
+                <th><label for="{{ form.seriado.id_for_label }}">Seriado:</label></th>
+                <td>{{ form.seriado }}</td>
+            </tr>
+        </table>
+        <div class="save-container">
+            <button type="submit" class="save btn btn-secondary">Save</button>
+        </div>
+    </form>
+    {% endblock %}
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function() {
+            window.parent.postMessage('cerrarFormulario', '*');
+        });
+    </script>
+</body>
+</html>

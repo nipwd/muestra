@@ -1,0 +1,45 @@
+{% extends "templates/index.html" %}
+{% load static %}
+
+{% block contenidoQueCambia %}
+<style>    .dropdown {
+  font-size: 20px;
+  background-color: #00AEEF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdown > * {
+  margin: 5px;
+}
+
+.dropdown a,
+.dropdown button {
+  border: 1px solid black;
+  padding: 5px;
+  background-color: #00AEEF;
+  color: black;
+  font-size: 20px;
+}</style>
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" style="font-size:20px;background-color:#00AEEF;color:black;" type="button" data-toggle="dropdown">Seleccionar Tecnico
+    <span class="caret"></span> </button>
+    <ul class="dropdown-menu">
+        {% for nombre in name %}
+      <li><a href="{% url 'verTecnico' nombre.name %}">{{ nombre.name }}</a></li>
+      {% endfor %}   
+    </ul>
+  </div>
+
+  <div class="home-grafico2" id="chart-container2" style="flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;">
+    {{ html_fig|safe }} 
+</div>
+
+    {% endblock %}

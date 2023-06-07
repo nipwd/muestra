@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Página no encontrada</title>
+    <style>
+        @keyframes error-animation {
+            0% {
+                transform: translateX(-50px);
+            }
+            50% {
+                transform: translateX(50px);
+            }
+            100% {
+                transform: translateX(-50px);
+            }
+        }
+
+        body {
+            background-color: #000000;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 5rem;
+            color: #333;
+        }
+
+        p {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .error-code {
+            font-size: 10rem;
+            color: #00AEEF;
+            margin: 0;
+            animation: error-animation 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="error-code">404</h1>
+        <p>Página no encontrada</p>
+    </div>
+</body>
+</html>

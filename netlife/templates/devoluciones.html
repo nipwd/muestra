@@ -1,0 +1,134 @@
+{% extends "templates/index.html" %}
+{% load static %}
+{% block contenidoQueCambia %}
+
+<style>
+  /* Estilos para el panel de inicio de sesión */
+  .login-panel {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+      font-size: 18px;
+  }
+
+  .login-panel h1 {
+      margin-bottom: 20px;
+  }
+
+  .login-panel form {
+      display: flex;
+      flex-direction: column;
+  }
+
+  .login-panel form input[type="text"],
+  .login-panel form input[type="password"] {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+  }
+
+  .login-panel form button[type="submit"] {
+      padding: 10px;
+      background-color: #00AEEF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+
+  .container {
+      display: flex;
+      width: 95%; /* Establece que el contenedor principal ocupe el 95% de la pantalla */
+      margin: 0 auto; /* Centra el contenedor principal horizontalmente */
+    }
+
+    .container > div {
+      flex: 1;
+    }
+
+    .container > div:first-child {
+      flex-basis: 70%;
+    }
+
+    .container > div:last-child {
+      flex-basis: 30%;
+    }
+    table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid rgb(0, 0, 0);
+            align-items: center;
+            
+          }
+              th, td, h2 {
+            text-align: center;
+            font-size:18px;
+            border:1px solid black;
+          }
+
+
+</style>
+
+<div class="login-panel">
+  <h3 style="font-size:20px;background-color:#00AEEF;color:white;">Agregar Equipos No Operativos</h3>
+  {% if formulario.errors %}
+     <p style="color:red;font-size:20px">Hay algo mal</p>
+  {% endif %}
+  {% autoescape off %} 
+  <form method="POST" enctype="multipart/form-data" > {% csrf_token %}
+      <table style="font-size:20px;color:black;grid-area: auto;">
+          {{ formulario.as_table  }}
+      </table>
+      <input type="submit" value="Enviar"style="font-size:20px;background-color:#00AEEF;color:white;" >
+      <style>textarea {
+        width: 250px;
+        height: 150px;
+        float: left;
+      }</style>
+  </form>
+  </div>
+</div>
+{% endautoescape %}
+
+<div >
+    <h2 style="background-color:#00AEEF;color:black">Equipos en Inventario de Devolución:</h2> 
+  
+      <div class="container" style="max-width:100%;height:40%;justify-content: center;">
+        
+        <table style="width: 80%;border-style: none;">
+          <tr style="padding: 2px;">
+              <th style="padding: 2px;background-color:#00AEEF;color:black">Estado</th>
+              <th style="padding: 2px;background-color:#00AEEF;color:black">Nombre de Equipo</th>
+              <th style="padding: 2px;background-color:#00AEEF;color:black">Seriado</th>
+          </tr>
+          {% for equipo in equipos_devolucion %}
+          <tr style="padding: 2px;">
+              <td style="padding: 2px;">{{ equipo.estado }}</td>
+              <td style="padding: 2px;">{{ equipo.nombre_equipo }}</td>
+              <td style="padding: 2px;">{{ equipo.seriado }}</td>
+          </tr>
+          {% endfor %}
+      </table>
+      
+  
+       
+  
+    
+</div>
+</div>
+<p></p>
+<p></p>
+<p></p>
+  
+      
+
+
+
+
+{% endblock %}
+
+

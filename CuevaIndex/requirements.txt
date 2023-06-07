@@ -1,0 +1,12 @@
+cryptocmd==0.6.1
+ipykernel==05.5.6
+lightgbm==03.3.2
+matplotlib==03.5.0
+numpy==01.23.0
+pandas==01.4.0
+plotly==05.10.0
+seaborn==00.11.0
+session_info==01.0.0
+skforecast==00.5.0
+scikit-learn==1.1.0
+statsmodels==00.13.0

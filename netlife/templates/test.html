@@ -1,0 +1,254 @@
+{% extends "templates/index.html" %}
+{% load static %}
+
+{% block contenidoQueCambia %}
+
+<style>
+    .dropdown {
+      font-size: 20px;
+      background-color: #00AEEF;
+      display: flex;
+      align-items: center;
+    }
+  
+    .dropdown > * {
+      margin: 5px;
+    }
+  
+    .dropdown a,
+    .dropdown button {
+      border: 1px solid black;
+      padding: 5px;
+      background-color: #00AEEF;
+      color: black;
+      font-size: 20px;
+    }
+  
+    .dropdown form {
+      display: inline-block;
+    }
+  
+    .dropdown form.add_your_class {
+      display: flex;
+      align-items: center;
+    }
+  
+    .dropdown form.add_your_class input[type="search"],
+    .dropdown form.add_your_class button {
+      margin: 5px;
+    }
+  
+    .separator {
+      width: 1px;
+      height: 20px;
+      background-color: black;
+      margin: 0 10px;
+    }
+
+
+    body {
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      width: 95%;
+      margin: 0 auto; 
+    }
+
+    .container > div {
+      flex: 1;
+    }
+
+    .container > div:first-child {
+      flex-basis: 70%;
+    }
+
+    .container > div:last-child {
+      flex-basis: 30%;
+    }
+
+
+#formularioContainer {
+  position: fixed;
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background-color: #fff;
+  padding: 20px; 
+  width: 600px; 
+  height: 400px;
+}
+table {
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        th, td {
+          padding: 8px;
+          text-align: center;
+          border-bottom: 1px solid black;
+        }
+        
+        tr:hover {background-color: #D6EEEE;}
+        
+        .flex-container {
+            display: flex;
+            align-items: center;
+        }
+        .float-child {
+            width: 50%;
+            float: center;
+            padding: 20px;
+            border: 1px solid black;
+            background: white;
+        }  
+        .flex-child:first-child {
+            margin-right: 20px;
+        } 
+        * {
+            box-sizing: border-box;
+          }
+          
+          .row {
+            display: flex;
+            margin-left:-5px;
+            margin-right:-5px;
+          }
+          
+          .column {
+            flex: 50%;
+            padding: 5px;
+          }
+          
+          table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid rgb(0, 0, 0);
+            align-items: center;
+            
+          }
+          
+          th, td, h2 {
+            text-align: center;
+            padding: 16px;
+            font-size:18px;
+            border:1px solid black;
+          }
+          
+          tr:nth-child(even) {
+            background-color: #f2f2f2;
+          }
+          
+                
+          .flex-container {
+            display: flex;
+        }
+        .float-child {
+            width: 50%;
+            float: left;
+            padding: 20px;
+            border: 2px solid black;
+            background: white;
+        }  
+        .flex-child:first-child {
+            margin-right: 20px;
+        } 
+    
+  </style>
+
+<div class="responsive-table" style="width: 100%; height: auto;border-style: none;background-color: #00AEEF;">
+  <table class="table" >
+    <tr>
+      <td>
+        <div class="dropdown">
+          <a class="bi bi-arrow-left-short btn-lg" href="{% url 'verTecnico' anterior %}"></a>
+          <a class="bi bi-arrow-right-short btn-lg" href="{% url 'verTecnico' siguiente %}"></a>
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" style="width: 20%;">{{ nombre }}
+            <span class="caret"></span>
+          </button>
+          <div class="separator"></div>
+          <ul class="dropdown-menu" >
+            {% for nombre in name %}
+            <li><a href="{% url 'verTecnico' nombre.name %}">{{ nombre.name }}</a></li>
+            {% endfor %}
+          </ul>
+   
+          <form action=""method="GET">
+            <label for="valor">FECHA:</label>
+            <input  type="date" id="valor_data" name="valor_data">
+            <input type="submit">
+          </form></a>
+          <br>
+          <div class="separator"></div>
+          <h2><form class="add_your_class" method="GET" action="" >
+            <input class="add_your_class" type="search" name="search"> 
+            <button class="add_your_class" type="submit"> Search </button>
+        </form></h2>
+
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<body>
+  <h2 style="background-color:#00AEEF;color:black">Equipos Instalados:</h2> 
+
+    <div class="container" style="max-width:100%;height:auto;">
+      
+        <table style="width: 100%; height: 200%;border-style: none;">
+            
+          <tr>
+            <th>Fecha</th>
+            <th>Tecnico</th>
+            <th>Equipos Instalado</th>
+            <th>mac instalado</th>
+            <th>Equipo Desinstalado</th>
+            <th>mac Desinstalado</th>
+            <th>VT</th>
+            <th>CLIENTE</th>
+          </tr>
+          {% for data in equipos %}
+          <tr>
+            <td>{{ data.fecha }}</td>
+      <td>{{ data.tecnico }}</td>
+            <td>{{ data.equipo_instalado }}</td>
+            <td>{{ data.mac_instalado }}</td>
+            <td>{{ data.equipo_desinstalado }}</td>
+            <td>{{ data.mac_desinstalado }}</td>
+            <td>{{ data.numero_vt }}</td>
+            <td>{{ data.numero_cliente }}</td>
+          </tr>
+          {% endfor %}
+
+          {% for data in search %}
+          <tr>
+            <td>{{ data.fecha }}</td>
+      <td>{{ data.tecnico }}</td>
+            <td>{{ data.equipo_instalado }}</td>
+            <td>{{ data.mac_instalado }}</td>
+            <td>{{ data.equipo_desinstalado }}</td>
+            <td>{{ data.mac_desinstalado }}</td>
+            <td>{{ data.numero_vt }}</td>
+            <td>{{ data.numero_cliente }}</td>
+          </tr>
+          {% endfor %}
+
+      </table>
+
+</div>
+  </body>
+  
+  <p></p>
+  <p></p>
+  <p></p>
+
+    
+  
+  
+
+{% endblock %}
